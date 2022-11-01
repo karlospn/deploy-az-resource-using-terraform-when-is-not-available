@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String",
+            "metadata": {
+                "description": " Specifies the name of the App Configuration."
+            }
+        },
+        "location": {
+            "type": "String",
+            "metadata": {
+                "description": " Specifies the location of the App Configuration."
+            }
+        },
+        "sku": {
+            "type": "String",
+            "metadata": {
+                "description": "The SKU name of the App Configuration"
+            }
+        },
+        "public_network_access": {
+            "type": "String",
+            "metadata": {
+                "description": "The Public Network Access setting of the App Configuration"
+            }
+        },
+        "disable_local_auth": {
+            "type": "String",
+            "metadata": {
+                "description": "Whether local authentication methods is enabled."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.AppConfiguration/configurationStores",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "properties": {
+                "encryption": {},
+                "publicNetworkAccess": "[parameters('public_network_access')]",
+                "disableLocalAuth": "[parameters('disable_local_auth')]",
+                "softDeleteRetentionInDays": 0,
+                "enablePurgeProtection": false
+            }
+        }
+    ]
+}
