@@ -13,5 +13,5 @@ if [ -z "$app_config_instance" ]; then
 else
     echo "App Config found. Trying to destroy the resource."
     az appconfig delete --name $APP_CONFIG_NAME --resource-group $RES_GROUP_NAME --yes
-    sleep 5s
+    sleep 30s
 fi
