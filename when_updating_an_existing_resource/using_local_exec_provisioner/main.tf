@@ -32,12 +32,19 @@ resource "null_resource" "sftp_enable" {
     triggers = {
         storage_account_name = local.storage_account_name
         res_group_name = local.resource_group_name
-        sftp_user = "ftpuser"
+        sftp_user = "ftpuser2"
     }
     provisioner "local-exec" {
-        command = "./enable_sftp_create_localuser.sh ${self.triggers.storage_account_name} ${self.triggers.res_group_name} ${self.triggers.sftp_user}" 
+        command = "./enable_sftp_create_localuser.sh ${self.triggers.storage_account_name} ${self.triggers.res_group_name} ${self.triggers.sftp_user}"
         interpreter = ["bash", "-c"]
     }
+
+    provisioner "local-exec" {
+        when = destroy
+        command = "./disable_sftp_and_localuser.sh ${self.triggers.storage_account_name} ${self.triggers.res_group_name} ${self.triggers.sftp_user}" 
+        interpreter = ["bash", "-c"]
+    }
+
     depends_on = [
         azurerm_storage_container.azurerm_storage_container
     ]
