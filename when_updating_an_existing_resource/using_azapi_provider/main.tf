@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "sftp_storage_acct" {
     account_tier                = "Standard"
     account_replication_type    = "LRS"
     min_tls_version             = "TLS1_2"
-    is_hns_enabled           = true
+    is_hns_enabled              = true
 }
 
 # Create container
