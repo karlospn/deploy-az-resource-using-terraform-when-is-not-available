@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "rg_demo" {
     location  = "West Europe"
 }
 
-## Create App Configuration using the AzApi provider
+## Create App Configuration using the resource group arm template resource
 resource "azurerm_resource_group_template_deployment" "appconf" {
     name                  = "app-conf-deploy"
     resource_group_name   = local.resource_group_name
