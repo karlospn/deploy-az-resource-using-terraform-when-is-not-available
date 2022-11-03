@@ -32,7 +32,7 @@ resource "null_resource" "sftp_enable" {
     triggers = {
         storage_account_name = local.storage_account_name
         res_group_name = local.resource_group_name
-        sftp_user = "ftpuser2"
+        sftp_user = "ftpuser"
     }
     provisioner "local-exec" {
         command = "./enable_sftp_create_localuser.sh ${self.triggers.storage_account_name} ${self.triggers.res_group_name} ${self.triggers.sftp_user}"

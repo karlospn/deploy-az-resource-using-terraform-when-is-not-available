@@ -56,7 +56,7 @@ resource "azapi_resource" "sftp_local_user" {
       hasSharedKey = true,
       hasSshKey = false,
       permissionScopes = [{
-        permissions = "rw",
+        permissions = "rl",
         service = "blob",
         resourceName = "container"
       }]
@@ -70,4 +70,24 @@ resource "azapi_resource" "sftp_local_user" {
     azurerm_storage_container.sftp_storage_acct_container,
     azapi_update_resource.sftp_azpi_sftp
   ]
+}
+
+# Retrieve password
+resource "azapi_resource_action" "generate_sftp_user_password" {
+  type        = "Microsoft.Storage/storageAccounts/localUsers@2022-05-01"
+  resource_id = azapi_resource.sftp_local_user.id
+  action      = "regeneratePassword"
+  body = jsonencode({
+    username = azapi_resource.sftp_local_user.name
+  })
+
+  response_export_values = ["sshPassword"]
+
+  depends_on = [
+    azurerm_storage_account.sftp_storage_acct,
+    azurerm_storage_container.sftp_storage_acct_container,
+    azapi_update_resource.sftp_azpi_sftp,
+    azapi_resource.sftp_local_user
+  ]
+
 }
