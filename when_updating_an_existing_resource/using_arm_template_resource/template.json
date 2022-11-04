@@ -1,0 +1,148 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storage_account_name": {
+            "type": "String",
+            "metadata": {
+                "description": "Specifies the name of the Storage Account."
+            }
+        },
+        "storage_account_tier": {
+            "type": "String",
+            "metadata": {
+                "description": "Defines the Tier to use for this storage account."
+            }
+        },
+        "storage_account_replication": {
+            "type": "String",
+            "metadata": {
+                "description": "Defines the type of replication to use for this storage account."
+            }
+        },
+        "storage_account_min_tls": {
+            "type": "String",
+            "metadata": {
+                "description": "The minimum supported TLS version for the storage account."
+            }
+        },
+        "storage_account_hns_enabled": {
+            "type": "Bool",
+            "metadata": {
+                "description": "Is Hierarchical Namespace enabled?."
+            }
+        },
+        "sftp_user": {
+            "type": "String",
+            "metadata": {
+                "description": "The SFTP local username."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('storage_account_name')]",
+            "location": "westeurope",
+            "sku": {
+                "name": "[concat(parameters('storage_account_tier'), '_', parameters('storage_account_replication'))]",
+                "tier": "[parameters('storage_account_tier')]"
+            },
+            "kind": "StorageV2",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "defaultToOAuthAuthentication": false,
+                "publicNetworkAccess": "Enabled",
+                "allowCrossTenantReplication": true,
+                "isNfsV3Enabled": false,
+                "isLocalUserEnabled": true,
+                "isSftpEnabled": true,
+                "minimumTlsVersion": "[parameters('storage_account_min_tls')]",
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "isHnsEnabled": "[parameters('storage_account_hns_enabled')]",
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storage_account_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storage_account_name'))]"
+            ],
+            "sku": {
+                "name": "[concat(parameters('storage_account_tier'), '_', parameters('storage_account_replication'))]",
+                "tier": "[parameters('storage_account_tier')]"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/localusers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storage_account_name'), '/', parameters('sftp_user'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storage_account_name'))]"
+            ],
+            "properties": {
+                "hasSshPassword": true,
+                "permissionScopes": [
+                    {
+                        "permissions": "rw",
+                        "service": "blob",
+                        "resourceName": "container"
+                    }
+                ],
+                "homeDirectory": "container",
+                "hasSharedKey": false,
+                "hasSshKey": false
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storage_account_name'), '/default/container')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storage_account_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storage_account_name'))]"
+            ],
+            "properties": {
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        }
+    ]
+}
