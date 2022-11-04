@@ -5,13 +5,13 @@
         "name": {
             "type": "String",
             "metadata": {
-                "description": " Specifies the name of the App Configuration."
+                "description": "Specifies the name of the App Configuration."
             }
         },
         "location": {
             "type": "String",
             "metadata": {
-                "description": " Specifies the location of the App Configuration."
+                "description": "Specifies the location of the App Configuration."
             }
         },
         "sku": {
