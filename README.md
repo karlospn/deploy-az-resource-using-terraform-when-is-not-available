@@ -4,11 +4,11 @@ Everyone who has worked long enough with Terraform in Azure has been in the posi
 The same situation also happens when trying to enable a feature of an existing resource and that feature is missing from the Azure Terraform provider.
 
 Right now there are **3 options available** when you want to create or update an Azure resource but this resource doesn't exist on the AzureRM Terraform Provider:
-- Using the ``null_resource`` resource alongside with ``local-exec`` provisioner, and building a script that uses the ``Azure CLI`` or the ``Azure Az Powershell Module``.
-- Using the ``azurerm_resource_group_template_deployment`` resource alongside an ``ARM Template``.
+- Using the  ``null_resource`` alongside with the ``local-exec`` provisioner to execute a script that uses the ``Azure CLI`` or the ``Azure Az Powershell Module``.
+- Using the ``azurerm_resource_group_template_deployment`` from the AzureRM provider to deploy an ``ARM Template``.
 - Using the ``AzAPI`` provider.
 
-This repository contains a few of examples of it.
+This repository contains a couple of examples for every option.
 
 **Important**: Using any of these options to provision or update a resource using Terraform should be a last resort and it makes sense only when the AzureRM provider doesn't have an implementation for the service we want to create or update.
 
