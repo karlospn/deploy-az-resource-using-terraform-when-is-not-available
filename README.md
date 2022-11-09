@@ -1,6 +1,6 @@
 # How to deploy an Azure resource using Terraform when it is not available in the AzureRM official provider
 
-Every one who has worked long enough with Terraform in Azure has been in the position of wanting to deploy a resource that's not available on the official [Azure Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm).    
+Everyone who has worked long enough with Terraform in Azure has been in the position of wanting to deploy a resource that's not available on the official [Azure Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm).    
 The same situation also happens when trying to enable a feature of an existing resource and that feature is missing from the Azure Terraform provider.
 
 Right now there are **3 options available** when you want to create or update an Azure resource but this resource doesn't exist on the AzureRM Terraform Provider:
