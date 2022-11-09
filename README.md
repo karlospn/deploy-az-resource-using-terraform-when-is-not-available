@@ -22,7 +22,7 @@ This repository contains a few of examples of it.
 _I'm aware that you can create an Azure App Configuration using the ``azurerm_app_configuration`` resource available on the AzureRM provider, but this is just an example of how you can provision an Azure resource using Terraform without the AzureRM provider._
 
 - ``/when_updating_an_existing_resource`` folder contains:
-  - An example of how to enable SFTP support for an existing Azure Blob Storage using the ``AzApi`` provider.
-  - An example of how to enable SFTP support for an existing Azure Blob Storage using the ``azurerm_resource_group_template_deployment`` resource +  an ``ARM Template``.
-  - An example of how to enable SFTP support for an existing Azure Blob Storage using the ``null_resource`` + ``local-exec`` provisioner + ``Az CLI`` shell script.
+  - An example of how to enable the SFTP support on an existing Azure Blob Storage using the ``AzApi`` provider.
+  - An example of how to enable the SFTP support on an existing Azure Blob Storage using the ``azurerm_resource_group_template_deployment`` resource +  an ``ARM Template``.
+  - An example of how to enable the SFTP support on an existing Azure Blob Storage using the ``null_resource`` + ``local-exec`` provisioner + ``Az CLI`` shell script.
 
